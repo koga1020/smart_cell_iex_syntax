@@ -22,11 +22,12 @@ defmodule SmartCellIexSyntax do
   @impl true
   def to_source(attrs) do
     quote do
-        unquote(attrs["code"])
-        |> String.replace("iex> ", "")
-        |> String.replace("...> ", "")
-        |> Code.eval_string()
-        |> elem(0)
+      unquote(attrs["code"])
+      |> tap(fn code -> IO.puts(code) end)
+      |> String.replace("iex> ", "")
+      |> String.replace("...>", "")
+      |> Code.eval_string()
+      |> elem(0)
     end
     |> Kino.SmartCell.quoted_to_string()
   end
